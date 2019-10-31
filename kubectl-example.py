@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 
 
-from airflow.models import DAG, DummyOperator
+from airflow.models import DAG
+from airflow.operators import DummyOperator
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.contrib.kubernetes.secret import Secret
 from airflow.contrib.kubernetes.volume import Volume
