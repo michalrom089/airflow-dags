@@ -1,6 +1,7 @@
 from airflow import DAG
 from datetime import datetime, timedelta
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
+from airflow.operators.bash_operator import BashOperator
 from airflow.operators.dummy_operator import DummyOperator
 
 
@@ -19,7 +20,7 @@ dag = DAG(
     'kube2', default_args=default_args, schedule_interval=timedelta(minutes=10))
 
 
-last = DummyOperator(task_id='run_this_first', dag=dag)
+last = DummyOperator(task_id='run_last', dag=dag)
 
 passing = KubernetesPodOperator(namespace='default',
                                 image="python:3.7",
@@ -43,6 +44,13 @@ failing = KubernetesPodOperator(namespace='default',
                                 dag=dag
                                 )
 
+task1 = BashOperator(
+    task_id='run_first',
+    bash_command='echo 1',
+    dag=dag,
+)
+
+task1 >> passing
 passing >> last
 failing >> last
 
