@@ -1,0 +1,14 @@
+[flake8]
+ignore = 
+    E201, # Whitespace after '(' 
+    E202, # Whitespace before ')' 
+    E261, # At least two spaces before inline comment
+    E262, # Inline comment should start with '# '
+    E265, # Block comment should start with '# '
+    E402, # Module level import not at top of file
+    W291, # Trailing whitespace
+    W293, # Blank line contains whitespace 
+    W503 # Line break occurred before a binary operator
+max-complexity = 13
+exclude = env,.git,__pycache__,.vscode,notebooks/,Lib,Scripts,env,alembic/env.py
+max-line-length = 140
