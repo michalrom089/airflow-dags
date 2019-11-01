@@ -19,7 +19,7 @@ dag = DAG(
     'kube2', default_args=default_args, schedule_interval=timedelta(minutes=10))
 
 
-start = DummyOperator(task_id='run_this_first', dag=dag)
+last = DummyOperator(task_id='run_this_first', dag=dag)
 
 passing = KubernetesPodOperator(namespace='default',
                                 image="Python:3.6",
@@ -43,5 +43,9 @@ failing = KubernetesPodOperator(namespace='default',
                                 dag=dag
                                 )
 
-passing.set_upstream(start)
-failing.set_upstream(start)
+passing >> last
+failing >> last
+
+
+if __name__ == "__main__":
+    dag.cli()
