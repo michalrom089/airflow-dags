@@ -1,8 +1,10 @@
 from datetime import datetime, timedelta
 
 
+import airflow
 from airflow.models import DAG
 from airflow.operators.dummy_operator import DummyOperator
+from airflow.operators.bash_operator import BashOperator
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.contrib.kubernetes.secret import Secret
 from airflow.contrib.kubernetes.volume import Volume
@@ -48,6 +50,13 @@ failing = KubernetesPodOperator(namespace='default',
                                 get_logs=True,
                                 dag=dag
                                 )
+
+
+run_this = BashOperator(
+    task_id='run_after_loop',
+    bash_command='echo 1',
+    dag=dag,
+)
 
 passing.set_upstream(start)
 failing.set_upstream(start)
