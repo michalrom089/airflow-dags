@@ -69,8 +69,8 @@ wh_func = wh_fact_country_cs
 
 dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interval)
     
-ld_done = DummyOperator(task_id='landing_done')
-stg_done = DummyOperator(task_id='stg_done')
+ld_done = DummyOperator(task_id='landing_done', dag=dag)
+stg_done = DummyOperator(task_id='stg_done', dag=dag)
 
 for m in ld_func:
     t = PythonOperator(
