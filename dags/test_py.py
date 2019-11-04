@@ -25,5 +25,3 @@ wh_pbi = PythonOperator(
     dag=dag,
 )
 
-if __name__ == "__main__":
-    dag.cli()
