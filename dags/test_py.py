@@ -1,27 +1,24 @@
+import airflow
 from airflow import DAG
 from datetime import datetime, timedelta
 from airflow.operators.python_operator import PythonOperator
+from csbiETL import config
 
 YESTERDAY = datetime.now() - timedelta(days=1)
 
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': YESTERDAY,
-    'email': ['airflow@example.com'],
-    'email_on_failure': False,
-    'email_on_retry': False,
-    'retries': 1,
-    'retry_delay': timedelta(minutes=5)
+    'start_date': airflow.utils.dates.days_ago(2),
 }
 
 dag = DAG(
-    'kube2', default_args=default_args, schedule_interval=timedelta(minutes=10))
+    'python_test', default_args=default_args, schedule_interval=None)
 
 
-def print_context(ds, **kwargs):
-    print(kwargs)
-    print(ds)
+def print_context():
+    print("mysql_conn_string:")
+    print(config.MYSQL_CONNECTION_STRING)
     return 'Whatever you return gets printed in the logs'
 
 
