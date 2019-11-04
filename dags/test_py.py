@@ -1,10 +1,10 @@
 import airflow
 from airflow import DAG
-from datetime import datetime, timedelta
 from airflow.operators.python_operator import PythonOperator
-from csbiETL import config
+from sqlalchemy import create_engine
 
-YESTERDAY = datetime.now() - timedelta(days=1)
+from csbiETL.etl.warehouse.pbi_rls.wh_pbi_rls import wh_powerbi_rls
+from csbiETL import config
 
 default_args = {
     'owner': 'airflow',
@@ -12,20 +12,16 @@ default_args = {
     'start_date': airflow.utils.dates.days_ago(2),
 }
 
+cdw_context = create_engine(config.CDW_CONNECTION_STRING)
+
 dag = DAG(
-    'python_test', default_args=default_args, schedule_interval=None)
+    'wh_pbi_rls', default_args=default_args, schedule_interval=None)
 
-
-def print_context():
-    print("mysql_conn_string:")
-    print(config.MYSQL_CONNECTION_STRING)
-    return 'Whatever you return gets printed in the logs'
-
-
-run_this = PythonOperator(
-    task_id='print_the_context',
+wh_pbi = PythonOperator(
+    task_id='wh_powerbi_rls',
     provide_context=False,
-    python_callable=print_context,
+    python_callable=wh_powerbi_rls,
+    op_kwargs={'db_context': cdw_context},
     dag=dag,
 )
 
