@@ -14,7 +14,7 @@ default_args = {
 
 cdw_context = create_engine(config.CDW_CONNECTION_STRING)
 
-with DAG('test_with', default_args=default_args, schedule_interval=None):
+with DAG('test_with', default_args=default_args, schedule_interval=None) as dag:
 
     wh_pbi = PythonOperator(
         task_id='wh_powerbi_rls',
@@ -22,3 +22,5 @@ with DAG('test_with', default_args=default_args, schedule_interval=None):
         python_callable=wh_powerbi_rls,
         op_kwargs={'db_context': cdw_context}
     )
+
+    dag.cli()

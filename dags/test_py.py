@@ -24,4 +24,3 @@ wh_pbi = PythonOperator(
     op_kwargs={'db_context': cdw_context},
     dag=dag,
 )
-
