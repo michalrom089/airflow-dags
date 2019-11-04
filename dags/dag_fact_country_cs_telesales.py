@@ -12,7 +12,7 @@ from csbiETL import config
 
 
 schedule_interval = None
-dag_name = 'wh_fact_country_cs_weekly'
+dag_name = 'wh_fact_country_cs_telesales'
 cdw_context = create_engine(config.CDW_CONNECTION_STRING)
 mysql_context = create_engine(config.MYSQL_CONNECTION_STRING)
 
