@@ -4,9 +4,9 @@ from airflow.operators.python_operator import PythonOperator
 from sqlalchemy import create_engine
 
 from csbiETL.etl.landing.incontact.ld_telesales import ld_telesales
-from csbiETL.etl.landing.sap_telesales.ld_sap_telesales import ld_sap_telesales
+from csbiETL.etl.landing.sap.ld_sap_telesales import ld_sap_telesales
 from csbiETL.etl.staging.incontact.stg_telesales import stg_telesales
-from csbiETL.etl.staging.sap_telesales.stg_sap_telesales import stg_sap_telesales
+from csbiETL.etl.staging.sap.stg_sap_telesales import stg_sap_telesales
 from csbiETL.etl.warehouse.fact_country.wh_fact_country_cs_telesales import wh_fact_country_cs_telesales
 from csbiETL import config
 
