@@ -16,8 +16,8 @@ default_args = {
 }
 
 def send():
-    with open('t.1', 'rb') as f:
-        DataLake(debug_mode=False).upload_file(f, 'test', 't.1')
+    b = BytesIO(b'asdasd')
+    DataLake(debug_mode=False).upload_file(b, 'test2', 't.2')
 
 dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interval)
 
