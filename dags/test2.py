@@ -5,6 +5,10 @@ from csbiETL.common.DataLake import DataLake
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from io import BytesIO
+from csbiETL import config
+from csbiETL.etl.landing.frontline.ld_frontline import ld_email_frontline
+
+mysql_context = create_engine(config.MYSQL_CONNECTION_STRING)
 
 
 schedule_interval = '*/5 * * * *'
@@ -22,12 +26,10 @@ def send():
 
 dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interval)
 
-wh_pbi = PythonOperator(
-    task_id='send1',
+ld_frontline = PythonOperator(
+    task_id='ld_email_frontline',
     provide_context=False,
-    python_callable=send,
+    python_callable=ld_email_frontline,
+    op_kwargs={'db_context': mysql_context},
     dag=dag
 )
-
-
-
