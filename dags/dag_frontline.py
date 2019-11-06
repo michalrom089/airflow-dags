@@ -49,8 +49,7 @@ wh_frontline = PythonOperator(
     provide_context=False,
     python_callable=run,
     op_kwargs={'db_src': cdw_context, 'db_dest': cdw_context},
-    dag=dag, 
-    pool='test_pool'
+    dag=dag
 )
 
 # ld_frontline >> stg_frontline >> wh_frontline
