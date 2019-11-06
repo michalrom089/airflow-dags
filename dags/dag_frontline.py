@@ -23,6 +23,11 @@ default_args = {
 
 dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interval)
 
+def run(db_src, db_dest):
+    ld_email_frontline(db_src)
+    stg_emails_frontline(db_src)
+    wh_emails_frontline(db_src, db_dest)
+
 # ld_frontline = PythonOperator(
 #     task_id='ld_email_frontline',
 #     provide_context=False,
@@ -42,7 +47,7 @@ dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interv
 wh_frontline = PythonOperator(
     task_id='wh_emails_frontline',
     provide_context=False,
-    python_callable=wh_emails_frontline,
+    python_callable=run,
     op_kwargs={'db_src': mysql_context, 'db_dest': cdw_context},
     dag=dag
 )
