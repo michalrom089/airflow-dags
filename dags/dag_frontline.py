@@ -12,8 +12,8 @@ from csbiETL import config
 
 schedule_interval = '0 5 * * *'
 dag_name = 'wh_frontline'
-mysql_context = create_engine(config.MYSQL_CONNECTION_STRING)
-cdw_context = create_engine(config.CDW_CONNECTION_STRING)
+mysql_context = create_engine(config.MYSQL_CONNECTION_STRING, echo=True, echo_pool=True)
+cdw_context = create_engine(config.CDW_CONNECTION_STRING, echo=True, echo_pool=True)
 
 default_args = {
     'owner': 'airflow',
