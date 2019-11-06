@@ -6,7 +6,7 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 
 
-schedule_interval = '0 /*5 * * *'
+schedule_interval = '*/5 * * * *'
 dag_name = 'datalaketest'
 
 default_args = {
