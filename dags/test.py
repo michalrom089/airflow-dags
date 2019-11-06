@@ -1,36 +1,29 @@
+from datetime import datetime
 
-from datetime import datetime, timedelta
+from csbiETL.common.DataLake import DataLake
+from airflow import DAG
+from airflow.operators.python_operator import PythonOperator
+from io import BytesIO
 
-import airflow
-from airflow.models import DAG
-from airflow.operators.bash_operator import BashOperator
-from airflow.operators.dummy_operator import DummyOperator
 
-args = {
-    'owner': 'Airflow',
-    'start_date': datetime(2019,11,6,9,0)
+schedule_interval = '*/5 * * * *'
+dag_name = 'datalaketest1'
+
+default_args = {
+    'owner': 'airflow',
+    'depends_on_past': False,
+    'start_date': datetime(2019, 11, 6, 10, 10)
 }
 
-dag = DAG(
-    dag_id='example_bash_operator',
-    default_args=args,
-    schedule_interval='*/5 * * * *',
-    dagrun_timeout=timedelta(minutes=60),
+def send():
+    b = BytesIO(b'asdasd')
+    DataLake(debug_mode=False).upload_file(b, 'test2', 't.2')
+
+dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interval)
+
+ld_frontline = PythonOperator(
+    task_id='ld_email_frontline',
+    provide_context=False,
+    python_callable=send,,
+    dag=dag
 )
-
-run_this_last = DummyOperator(
-    task_id='run_this_last',
-    dag=dag,
-)
-
-# [START howto_operator_bash]
-run_this = BashOperator(
-    task_id='run_after_loop',
-    bash_command='echo 1',
-    dag=dag,
-)
-
-run_this >> run_this_last
-
-if __name__ == "__main__":
-    dag.cli()
