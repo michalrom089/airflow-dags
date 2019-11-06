@@ -7,7 +7,7 @@ from airflow.operators.bash_operator import BashOperator
 from airflow.operators.dummy_operator import DummyOperator
 
 args = {
-    'owner': 'Airflow'
+    'owner': 'Airflow',
     'start_date': datetime(2019,11,5)
 }
 
