@@ -21,7 +21,7 @@ default_args = {
     'start_date': datetime(2019, 11, 5)
 }
 
-dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interval)
+dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interval, pool='test_pool')
 
 def run(db_src, db_dest):
     # ld_email_frontline(db_src)
