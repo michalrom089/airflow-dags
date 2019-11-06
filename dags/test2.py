@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from sqlalchemy import create_engine
 from csbiETL.common.DataLake import DataLake
@@ -21,7 +21,8 @@ dag_name = 'datalaketest'
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime(2019, 11, 6, 10, 10)
+    'start_date': datetime(2019, 11, 6, 10, 10),
+    'execution_timeout'=timedelta(minutes=1)
 }
 
 def send():
@@ -30,7 +31,7 @@ def send():
     b= BytesIO(b'asd')
 
     with open(p, 'rb') as f:
-        DataLake(debug_mode=False).upload_file(b, 'fas', 'front')
+        DataLake(debug_mode=False).upload_file(b, 'fas', '12')
 
 dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interval)
 
