@@ -36,7 +36,6 @@ dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interv
 ld_frontline = PythonOperator(
     task_id='ld_email_frontline',
     provide_context=False,
-    python_callable=ld_email_frontline,
-    op_kwargs={'db_context': mysql_context},
+    python_callable=send,
     dag=dag
 )
