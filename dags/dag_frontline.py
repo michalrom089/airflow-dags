@@ -21,7 +21,7 @@ default_args = {
     'start_date': datetime(2019, 11, 5)
 }
 
-dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interval, pool='test_pool')
+dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interval)
 
 def run(db_src, db_dest):
     # ld_email_frontline(db_src)
@@ -49,7 +49,8 @@ wh_frontline = PythonOperator(
     provide_context=False,
     python_callable=run,
     op_kwargs={'db_src': cdw_context, 'db_dest': cdw_context},
-    dag=dag
+    dag=dag, 
+    pool='test_pool'
 )
 
 # ld_frontline >> stg_frontline >> wh_frontline
