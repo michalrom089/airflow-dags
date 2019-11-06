@@ -4,6 +4,7 @@ from datetime import datetime
 from csbiETL.common.DataLake import DataLake
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
+from io import BytesIO
 
 
 schedule_interval = '*/5 * * * *'
