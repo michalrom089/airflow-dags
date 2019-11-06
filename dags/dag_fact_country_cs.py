@@ -1,4 +1,5 @@
-import airflow
+from datetime import datetime
+
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.dummy_operator import DummyOperator
@@ -28,7 +29,7 @@ from csbiETL.etl.staging.powerfront.stg_all import stg_powerfront_all
 
 from csbiETL.etl.warehouse.fact_country.wh_fact_country_cs import wh_fact_country_cs
 
-schedule_interval = None
+schedule_interval = '0 5 * * *'
 dag_name = 'fact_country_cs'
 cdw_context = create_engine(config.CDW_CONNECTION_STRING)
 mysql_context = create_engine(config.MYSQL_CONNECTION_STRING)
@@ -36,7 +37,7 @@ mysql_context = create_engine(config.MYSQL_CONNECTION_STRING)
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': airflow.utils.dates.days_ago(2),
+    'start_date': datetime(2019, 11, 5)
 }
 
 
@@ -92,7 +93,7 @@ for m in stg_func:
         dag=dag
     )
 
-    t >> stg_done
+    ld_done >> t >> stg_done
 
 wh = PythonOperator(
     task_id=wh_func.__name__,

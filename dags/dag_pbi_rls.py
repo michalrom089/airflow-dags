@@ -1,4 +1,5 @@
-import airflow
+from datetime import datetime
+
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from sqlalchemy import create_engine
@@ -7,14 +8,14 @@ from csbiETL.etl.warehouse.pbi_rls.wh_pbi_rls import wh_powerbi_rls
 from csbiETL import config
 
 
-schedule_interval = None
+schedule_interval = '0 5 * * *'
 dag_name = 'wh_pbi_rls'
 cdw_context = create_engine(config.CDW_CONNECTION_STRING)
 
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': airflow.utils.dates.days_ago(2),
+    'start_date': datetime(2019, 11, 5)
 }
 
 dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interval)

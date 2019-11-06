@@ -1,4 +1,5 @@
-import airflow
+from datetime import datetime
+
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from sqlalchemy import create_engine
@@ -9,7 +10,7 @@ from csbiETL.etl.warehouse.frontline.wh_frontline import wh_emails_frontline
 from csbiETL import config
 
 
-schedule_interval = None
+schedule_interval = '0 5 * * *'
 dag_name = 'wh_frontline'
 cdw_context = create_engine(config.CDW_CONNECTION_STRING)
 mysql_context = create_engine(config.MYSQL_CONNECTION_STRING)
@@ -17,7 +18,7 @@ mysql_context = create_engine(config.MYSQL_CONNECTION_STRING)
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': airflow.utils.dates.days_ago(2),
+    'start_date': datetime(2019, 11, 5)
 }
 
 dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interval)
