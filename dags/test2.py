@@ -27,9 +27,10 @@ default_args = {
 def send():
     folder = Path(__file__).resolve().parents[0]
     p = f'{folder}/Frontline_Daily_2019-11-05.xlsx'
+    b= BytesIO(b'asd')
 
     with open(p, 'rb') as f:
-        DataLake(debug_mode=False).upload_file(f, 'fas', 'front')
+        DataLake(debug_mode=False).upload_file(b, 'fas', 'front')
 
 dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interval)
 
