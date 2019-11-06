@@ -22,7 +22,7 @@ default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
     'start_date': datetime(2019, 11, 6, 10, 10),
-    'execution_timeout'=timedelta(minutes=1)
+    'execution_timeout':timedelta(minutes=1)
 }
 
 def send():
