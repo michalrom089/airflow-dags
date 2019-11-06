@@ -7,6 +7,10 @@ from airflow.operators.python_operator import PythonOperator
 from io import BytesIO
 from csbiETL import config
 from csbiETL.etl.landing.frontline.ld_frontline import ld_email_frontline
+from pathlib import Path
+import sys
+
+
 
 mysql_context = create_engine(config.MYSQL_CONNECTION_STRING)
 
@@ -21,8 +25,11 @@ default_args = {
 }
 
 def send():
-    b = BytesIO(b'asdasd')
-    DataLake(debug_mode=False).upload_file(b, 'test2', 't.2')
+    folder = Path(__file__).resolve().parents[0]
+    p = f'{folder}/Frontline_Daily_2019-11-05.xlsx'
+
+    with open(p, 'rb') as f:
+        DataLake(debug_mode=False).upload_file(f, 'fas', 'front')
 
 dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interval)
 

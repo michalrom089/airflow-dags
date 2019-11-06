@@ -24,6 +24,6 @@ dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interv
 ld_frontline = PythonOperator(
     task_id='ld_email_frontline',
     provide_context=False,
-    python_callable=send,,
+    python_callable=send,
     dag=dag
 )
