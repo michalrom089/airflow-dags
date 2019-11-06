@@ -13,7 +13,7 @@ from csbiETL import config
 schedule_interval = '0 5 * * *'
 dag_name = 'wh_frontline'
 cdw_context = create_engine(config.CDW_CONNECTION_STRING)
-mysql_context = create_engine(config.MYSQL_CONNECTION_STRING)
+# mysql_context = create_engine(config.MYSQL_CONNECTION_STRING)
 
 default_args = {
     'owner': 'airflow',
@@ -24,9 +24,9 @@ default_args = {
 dag = DAG(dag_name, default_args=default_args, schedule_interval=schedule_interval)
 
 def run(db_src, db_dest):
-    ld_email_frontline(db_src)
-    stg_emails_frontline(db_src)
-    wh_emails_frontline(db_src, db_dest)
+    # ld_email_frontline(db_src)
+    # stg_emails_frontline(db_src)
+    wh_emails_frontline(db_dest, db_dest)
 
 # ld_frontline = PythonOperator(
 #     task_id='ld_email_frontline',
@@ -48,7 +48,7 @@ wh_frontline = PythonOperator(
     task_id='wh_emails_frontline',
     provide_context=False,
     python_callable=run,
-    op_kwargs={'db_src': mysql_context, 'db_dest': cdw_context},
+    op_kwargs={'db_src': cdw_context, 'db_dest': cdw_context},
     dag=dag
 )
 
